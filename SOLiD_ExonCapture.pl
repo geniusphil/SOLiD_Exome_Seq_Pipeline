@@ -10,6 +10,8 @@
 ##
 ## reference: /mnt/mibNGS_abi_bio_ExonCaptures/Analysis/Reference/humanDna.fasta
 ## known site: /mnt/mibNGS_abi_bio_ExonCaptures/Analysis/Reference/hg19.dbsnp.vcf
+## server: 72.69
+##
 
 
 
