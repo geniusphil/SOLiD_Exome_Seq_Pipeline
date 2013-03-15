@@ -22,6 +22,7 @@ sub Usage{
     SOLiD Exome Seq. SNP calling Pipeline script
     
     -r reference
+    -k known site
     -b bam file prefix
     -h Help
     
@@ -31,13 +32,14 @@ EOF
 my %opt;
 getopt("r:b:h:", \%opt);
 my $ref = $opt{r} or &Usage();
+my $knownsite = $opt{k} or &Usage();
 my $prefix = $opt{b} or &Usage();
 $opt{h} and &Usage();
 
 ## GATK RealignerTargetCreator
-`java -jar /opt/GenomeAnalysisTK-2.3-9/GenomeAnalysisTK.jar -T RealignerTargetCreator -nt 4 -R $ref -I $prefix.ma.bam -o $prefix.ma.bam.intervals`;
+`java -jar /opt/GenomeAnalysisTK-2.3-9/GenomeAnalysisTK.jar -T RealignerTargetCreator -nt 4 -R $ref -I $prefix.ma.bam -known $knownsite -o $prefix.ma.bam.intervals`;
 ## GATK IndelRealigner
-`java -jar /opt/GenomeAnalysisTK-2.3-9/GenomeAnalysisTK.jar -T IndelRealigner -R $ref -I $prefix.ma.bam -targetIntervals $prefix.ma.bam.intervals -o $prefix.realigned.bam`;
+`java -jar /opt/GenomeAnalysisTK-2.3-9/GenomeAnalysisTK.jar -T IndelRealigner -R $ref -I $prefix.ma.bam -targetIntervals $prefix.ma.bam.intervals -known $knownsite -o $prefix.realigned.bam`;
 
 ## Picard Make duplicates
 `java -jar /opt/picard-tools-1.85/picard-tools-1.85/MarkDuplicates.jar I=$prefix.realigned.bam O=$prefix.realigned.rmdup.bam METRICS_FILE=$prefix.duplicate_report.txt VALIDATION_STRINGENCY=LENIENT REMOVE_DUPLICATES=true ASSUME_SORTED=true`;
@@ -48,11 +50,11 @@ $opt{h} and &Usage();
 `samtools flagstat $prefix.realigned.rmdup.bam > $prefix.realigned.rmdup.bam.stat`;
 
 ## GATK BaseRecalibrator
-`java -jar /opt/GenomeAnalysisTK-2.3-9/GenomeAnalysisTK.jar -T BaseRecalibrator -nt 4 -R $ref -I $prefix.realigned.rmdup.bam -knownSites ../../hg19.dbsnp.vcf -o $prefix.recal_data.grp --covariate QualityScoreCovariate --covariate ReadGroupCovariate --covariate ContextCovariate --covariate CycleCovariate --solid_nocall_strategy PURGE_READ --solid_recal_mode SET_Q_ZERO_BASE_N`;
+`java -jar /opt/GenomeAnalysisTK-2.3-9/GenomeAnalysisTK.jar -T BaseRecalibrator -nt 4 -R $ref -I $prefix.realigned.rmdup.bam -known $knownsite -o $prefix.recal_data.grp --covariate QualityScoreCovariate --covariate ReadGroupCovariate --covariate ContextCovariate --covariate CycleCovariate --solid_nocall_strategy PURGE_READ --solid_recal_mode SET_Q_ZERO_BASE_N`;
 ## GATK PrintReads
 `java -jar /opt/GenomeAnalysisTK-2.3-9/GenomeAnalysisTK.jar -T PrintReads -R $ref -I $prefix.realigned.rmdup.bam -BQSR $prefix.recal_data.grp -o $prefix.realigned.rmdup.recali.bam`;
 ## GATK UinfiedGenotyper
-`java -jar /opt/GenomeAnalysisTK-2.3-9/GenomeAnalysisTK.jar -T UnifiedGenotyper -nt 4 -R $ref -I $prefix.realigned.rmdup.recali.bam -o "$prefix"_gatk.vcf -stand_call_conf 30.0 -stand_emit_conf 10.0 -glm both -D ../../hg19.dbsnp.vcf`;
+`java -jar /opt/GenomeAnalysisTK-2.3-9/GenomeAnalysisTK.jar -T UnifiedGenotyper -nt 4 -R $ref -I $prefix.realigned.rmdup.recali.bam -o "$prefix"_gatk.vcf -stand_call_conf 30.0 -stand_emit_conf 10.0 -glm both -D $knownsite`;
 
 ## SAMtools mpileup
 `samtools mpileup -ugf $ref $prefix.realigned.rmdup.recali.bam | bcftools view -bcvg - > $prefix.samtools.var.raw.bcf`;
