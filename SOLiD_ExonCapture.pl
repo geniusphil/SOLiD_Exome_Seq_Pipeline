@@ -50,7 +50,7 @@ $opt{h} and &Usage();
 `samtools flagstat $prefix.realigned.rmdup.bam > $prefix.realigned.rmdup.bam.stat`;
 
 ## GATK BaseRecalibrator
-`java -jar /opt/GenomeAnalysisTK-2.3-9/GenomeAnalysisTK.jar -T BaseRecalibrator -nt 4 -R $ref -I $prefix.realigned.rmdup.bam -known $knownsite -o $prefix.recal_data.grp --covariate QualityScoreCovariate --covariate ReadGroupCovariate --covariate ContextCovariate --covariate CycleCovariate --solid_nocall_strategy PURGE_READ --solid_recal_mode SET_Q_ZERO_BASE_N`;
+`java -jar /opt/GenomeAnalysisTK-2.3-9/GenomeAnalysisTK.jar -T BaseRecalibrator -nt 4 -R $ref -I $prefix.realigned.rmdup.bam -knownSites $knownsite -o $prefix.recal_data.grp --covariate QualityScoreCovariate --covariate ReadGroupCovariate --covariate ContextCovariate --covariate CycleCovariate --solid_nocall_strategy PURGE_READ --solid_recal_mode SET_Q_ZERO_BASE_N`;
 ## GATK PrintReads
 `java -jar /opt/GenomeAnalysisTK-2.3-9/GenomeAnalysisTK.jar -T PrintReads -R $ref -I $prefix.realigned.rmdup.bam -BQSR $prefix.recal_data.grp -o $prefix.realigned.rmdup.recali.bam`;
 ## GATK UinfiedGenotyper
