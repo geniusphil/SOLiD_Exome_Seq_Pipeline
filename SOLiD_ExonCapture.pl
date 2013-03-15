@@ -30,7 +30,7 @@ EOF
     exit;
 }
 my %opt;
-getopt("r:b:h:", \%opt);
+getopt("r:k:b:h:", \%opt);
 my $ref = $opt{r} or &Usage();
 my $knownsite = $opt{k} or &Usage();
 my $prefix = $opt{b} or &Usage();
