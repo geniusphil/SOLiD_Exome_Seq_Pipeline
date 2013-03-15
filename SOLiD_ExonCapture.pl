@@ -8,8 +8,8 @@
 ##                  Picard 1.85
 ##                  samtools 0.1.18
 ##
-## reference: /mnt/mibNGS_illumina_HiSeq_ExonCapture/reference/humanDna.fasta
-## known site: /mnt/qnap2/mibNGS_abi_bio_ExonCapture/BC_Frag_bam/hg19.dbsnp.vcf
+## reference: /mnt/mibNGS_abi_bio_ExonCaptures/Analysis/Reference/humanDna.fasta
+## known site: /mnt/mibNGS_abi_bio_ExonCaptures/Analysis/Reference/hg19.dbsnp.vcf
 
 
 
