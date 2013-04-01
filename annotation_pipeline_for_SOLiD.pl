@@ -30,6 +30,7 @@ sub Usage{
 EOF
 exit;
 }
+
 my %opt;
 getopt("n:p:a:db:h:", \%opt);
 my $sample_name = $opt{n} or &Usage();
@@ -37,6 +38,14 @@ my $output_path = $opt{p} or &Usage();
 my $avinput_file = $opt{a} or &Usage();
 my $avdb = $opt{db} or &Usage();
 $opt{h}  and &Usage();
+
+## vcf files to compress use bgzip
+`bgzip "$sample_name"_gatk.vcf`;
+`bgzip "$sample_name"_samtools.vcf`;
+
+## creat index use tabix
+`tabix -p vcf "$sample_name"_gatk.vcf.gz`;
+`tabix -p vcf "$sample_name"_samtools.vcf.gz`;
 
 ## VCFtools -> vcf-merge (gatk and samtools vcf merge)
 `vcf-merge "$sample_name"_gatk.vcf.gz "$sample_name"_samtools.vcf.gz > $sample_name.vcf`;
@@ -50,8 +59,7 @@ $opt{h}  and &Usage();
 ##            ucsc knowngene
 ##            ESP 6500
 ##            1KG 1000g2012apr
-##            
-## website: http://www.openbioinformatics.org/annovar/
 ##
+## website: http://www.openbioinformatics.org/annovar/
 
 `summarize_annovar.pl -buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500 --genetype knowngene --outfile $output_path $avinput_file $avdb`;
