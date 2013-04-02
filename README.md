@@ -8,3 +8,7 @@ Software:
    2. samtools
 
 
+Annotation pipeline flowchart
+=============================
+
+https://cacoo.com/diagrams/k0ph95cj6dzwkMkG-A9C75.png
