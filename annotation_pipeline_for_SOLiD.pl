@@ -40,37 +40,33 @@ my $avdb = $opt{db} or &Usage();
 $opt{h}  and &Usage();
 
 ## vcf files to compress use bgzip
-if(-e "$sample_name"_gatk.vcf.gz and "$sample_name"_samtools.vcf.gz){
+if(-e '"$sample_name"_gatk.vcf.gz' and '"$sample_name"_samtools.vcf.gz'){
 	next;
-	else{
-		`bgzip "$sample_name"_gatk.vcf`;
-		`bgzip "$sample_name"_samtools.vcf`;
-	}
+}else{
+	`bgzip "$sample_name"_gatk.vcf`;
+	`bgzip "$sample_name"_samtools.vcf`;
 }
 
 ## creat index use tabix
-if(-e "$sample_name"_gatk.vcf.gz.tbi and "$sample_name"_samtools.vcf.gz.tbi){
+if(-e '"$sample_name"_gatk.vcf.gz.tbi' and '"$sample_name"_samtools.vcf.gz.tbi'){
 	next;
-	else{
-		`tabix -p vcf "$sample_name"_gatk.vcf.gz`;
-		`tabix -p vcf "$sample_name"_samtools.vcf.gz`;
-	}
+}else{
+	`tabix -p vcf "$sample_name"_gatk.vcf.gz`;
+	`tabix -p vcf "$sample_name"_samtools.vcf.gz`;
 }
 
 ## VCFtools -> vcf-merge (gatk and samtools vcf merge)
-if(-e $sample_name.vcf){
+if(-e "$sample_name.vcf"){
 	next;
-	else{
-		`vcf-merge "$sample_name"_gatk.vcf.gz "$sample_name"_samtools.vcf.gz > $sample_name.vcf`;
-	}
+}else{
+	`vcf-merge "$sample_name"_gatk.vcf.gz "$sample_name"_samtools.vcf.gz > $sample_name.vcf`;
 }
 
 ## Annovar -> convert to annovar input format
-if(-e $sample_name.avinput){
+if(-e "$sample_name.avinput"){
 	next;
-	else{
-		`convert2annovar.pl -format vcf4 --includeinfo $sample_name.vcf > $sample_name.avinput`;
-	}
+}else{
+	`convert2annovar.pl -format vcf4 --includeinfo $sample_name.vcf > $sample_name.avinput`;
 }
 
 ## Annovar -> summarize annovar
@@ -82,9 +78,8 @@ if(-e $sample_name.avinput){
 ##
 ## website: http://www.openbioinformatics.org/annovar/
 
-if(-e $sample_name.exome_summary.csv and $sample_name.genome_summary.csv){
+if(-e "$sample_name.exome_summary.csv" and "$sample_name.genome_summary.csv"){
 	next;
-	else{
-		`summarize_annovar.pl -buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500 --genetype knowngene --outfile $output_path $avinput_file $avdb`;
-	}
+}else{
+	`summarize_annovar.pl -buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500 --genetype knowngene --outfile $output_path $avinput_file $avdb`;
 }
