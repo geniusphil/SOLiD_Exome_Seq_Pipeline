@@ -1,7 +1,7 @@
-SOLiD Exome Seq Pipeline
+SOLiD WGS SNV Pipeline
 ========================
 
-SOLiD Exon capture SNP calling pipeline
+SOLiD Whole Genome Sequencing SNV calling pipeline
 
 Software:
    1. GATK
