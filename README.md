@@ -22,4 +22,4 @@ SOLiD Whole Genome Sequencing SNV calling pipeline:
 
 ####Flowchart:
 
-![Annotation flowchart](https://cacoo.com/diagrams/k0ph95cj6dzwkMkG-A9C75.png)
+![Annotation flowchart](http://d.pr/i/OP46+)
