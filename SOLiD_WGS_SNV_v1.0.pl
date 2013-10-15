@@ -4,7 +4,7 @@
 ## SOLiD Whole Genome Sequencing SNV calling Pipeline
 ## 
 ## Software update:
-##                  GATK 2.7-2
+##                  GATK 2.7-2 (Broad Institute)
 ##                  Picard 1.98
 ##                  samtools 0.1.98
 ##
@@ -21,7 +21,7 @@ use Getopt::Std;
 
 sub Usage{
     print STDERR <<EOF;
-    SOLiD Exome Seq. SNP calling Pipeline script
+    SOLiD Whole Genome Sequencing SNP calling Pipeline script
     
     -r reference (path: /mnt/mibNGSapps/Reference/humanDna.fasta)
     -k known site (path: /mnt/mibNGSapps/Reference/hg19.dbsnp.vcf)
@@ -70,7 +70,7 @@ print "Check SOLiD BAM file index";
 
 ## GATK UinfiedGenotyper
 ## A variant caller which unifies the approaches of several disparate callers -- Works for single-sample and multi-sample data.
-`java -Xmx2g -jar /mnt/mibNGSapps/opt/GenomeAnalysisTK-2.7-2/GenomeAnalysisTK.jar -T UnifiedGenotyper -log $prefix.UnifiedGenotyper.log -nt 4 -R $ref -I $prefix.realigned.rmdup.recali.bam -o "$prefix"_gatk.vcf -stand_call_conf 30.0 -stand_emit_conf 10.0 -glm both -D $knownsite`;
+`java -Xmx2g -jar /mnt/mibNGSapps/opt/GenomeAnalysisTK-2.7-2/GenomeAnalysisTK.jar -T UnifiedGenotyper -log $prefix.UnifiedGenotyper.log -nt 4 -R $ref -I $prefix.realigned.rmdup.recali.bam -o "$prefix"_gatk.vcf -stand_call_conf 50.0 -stand_emit_conf 10.0 -glm both -D $knownsite`;
 
 ##############################
 ## SAMtools mpileup
