@@ -23,9 +23,9 @@ sub Usage{
     print STDERR <<EOF;
     SOLiD Whole Genome Sequencing SNP calling Pipeline script
     
-    -r reference (path: /mnt/mibNGSapps/Reference/humanDna.fasta)
-    -k known site (path: /mnt/mibNGSapps/Reference/hg19.dbsnp.vcf)
-    -b bam file prefix
+    -r reference (path: /mnt/isilonX200/Reference/SOLiD_reference/humanDna.fasta)
+    -k known site (path: /mnt/isilonX200/Reference/SOLiD_reference/hg19.dbsnp.vcf)
+    -b bam file prefix (Sample name)
     -h Help
     
 EOF
