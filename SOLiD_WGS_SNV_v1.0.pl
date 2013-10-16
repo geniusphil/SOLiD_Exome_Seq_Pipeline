@@ -8,8 +8,10 @@
 ##                  Picard 1.98
 ##                  samtools 0.1.98
 ##
-## Reference: /mnt/mibNGSapps/Reference/humanDna.fasta
-## Known site: /mnt/mibNGSapps/Reference/hg19.dbsnp.vcf
+## Reference: /mnt/mibNGSapps/Reference/SOLiD_reference/humanDna.fasta
+##            /mnt/isilonX200/Reference/SOLiD_reference/humanDna.fasta
+## Known site: /mnt/mibNGSapps/Reference/SOLiD_reference/hg19.dbsnp.vcf
+##             /mnt/isilonX200/Reference/SOLiD_reference/hg19.dbsnp.vcf
 ## 
 ## server: Cluster server
 ## 
